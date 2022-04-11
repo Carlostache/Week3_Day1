@@ -63,7 +63,7 @@ class Array
     def my_zip(*args)
         new_arr = Array.new(self.length) { Array.new(args.length + 1) }
         args = [self] + args
-        debugger
+        #debugger
         (0...args.length).each do |i|
             (0...self.length).each do |j|
                 new_arr[j][i] = args[i][j]
@@ -72,15 +72,46 @@ class Array
         new_arr
     end
 
+    def my_rotate(num = 1)
+        arr = self.dup
+        num.abs.times do
+            if num > 0
+                arr = arr[1..-1] + [arr[0]]
+            else
+                arr = [arr[-1]] + arr[0..-2]
+            end
+        end
+        arr
+    end
+
+    def my_join(sep = '')
+        str = ''
+        self.my_each do |el|
+            str += el + sep
+        end
+        if str[-1] == sep
+            str[-1] = ''
+        end
+        str
+    end
+
+    def my_reverse
+        new_arr = []
+        i = self.length - 1
+        while i >= 0
+            new_arr << self[i]
+            i -= 1
+        end
+        new_arr
+    end
 
 end
 
-a = [ 4, 5, 6 ]
-b = [ 7, 8, 9 ]
-p [1, 2, 3].my_zip(a, b) # => [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
-p a.my_zip([1,2], [8])   # => [[4, 1, 8], [5, 2, nil], [6, nil, nil]]
-p[1, 2].my_zip(a, b)    # => [[1, 4, 7], [2, 5, 8]]
+#a = [ "a", "b", "c", "d" ]
+#p a.my_rotate         #=> ["b", "c", "d", "a"]
+#p a.my_rotate(2)      #=> ["c", "d", "a", "b"]
+#p a.my_rotate(-3)     #=> ["b", "c", "d", "a"]
+#p a.my_rotate(15)     #=> ["d", "a", "b", "c"]
 
-c = [10, 11, 12]
-d = [13, 14, 15]
-p[1, 2].my_zip(a, b, c, d)    # => [[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]]
+#p [ "a", "b", "c" ].my_reverse   #=> ["c", "b", "a"]
+#p [ 1 ].my_reverse               #=> [1]
