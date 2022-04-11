@@ -105,13 +105,59 @@ class Array
         new_arr
     end
 
+    def bubble_sort!(&prc)
+        prc ||= Proc.new { |a, b| a <=> b }
+        sorted = false
+
+        while !sorted
+            sorted = true
+            self.each_with_index do |el, idx|
+                if prc.call(self[idx], self[idx+1]) == 1
+                    self[idx], self[idx+1] = self[idx+1], self[idx]
+                    sorted = false
+                end
+            end
+        end
+        self
+    end
+
+    def bubble_sort(&prc)
+        new_arr = self.dup
+        new_arr.bubble_sort!()
+    end
+
 end
 
-#a = [ "a", "b", "c", "d" ]
-#p a.my_rotate         #=> ["b", "c", "d", "a"]
-#p a.my_rotate(2)      #=> ["c", "d", "a", "b"]
-#p a.my_rotate(-3)     #=> ["b", "c", "d", "a"]
-#p a.my_rotate(15)     #=> ["d", "a", "b", "c"]
+def factors(int)
+    factors = []
+    (1..int).each do |i|
+        if int % i == 0
+            factors << i 
+        end
+    end
+    factors
+end
 
-#p [ "a", "b", "c" ].my_reverse   #=> ["c", "b", "a"]
-#p [ 1 ].my_reverse               #=> [1]
+[1, 90, 67, 30].bubble_sort
+
+def substrings(str)
+    substrings = []
+    (0...str.length).each do |idx1|
+        (idx1...str.length).each do |idx2|
+            substrings << str[idx1..idx2]
+        end
+    end
+    substrings
+end
+
+# p substrings("substrings")
+
+# p substrings("private jet")
+
+# p substrings("cat")
+
+def subwords(word, dictionary)
+    substrings = substrings(word)
+    dictionary.select { |dict_words| substrings.include?(dict_words) }
+end
+
